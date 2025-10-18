@@ -66,6 +66,9 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "verbose": false
+          },
           "configurations": {
             "production": {
               "buildTarget": "simplenfe:build:production"
