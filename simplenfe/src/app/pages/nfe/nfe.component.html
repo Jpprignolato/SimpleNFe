@@ -1,1 +1,58 @@
-<p>nfe works!</p>
+<nz-card nzTitle="Emissão de Nota Fiscal Eletrônica" class="card">
+  <form [formGroup]="nfeForm" nz-form nzLayout="vertical">
+
+    <!-- Emitente -->
+    <nz-card nzTitle="Emitente" class="section-card" [formGroupName]="'emitente'">
+      <div nz-row [nzGutter]="16">
+        <div nz-col nzSpan="8">
+          <label>CNPJ</label>
+          <input nz-input formControlName="cnpj" placeholder="Digite o CNPJ" />
+        </div>
+        <div nz-col nzSpan="16">
+          <label>Nome</label>
+          <input nz-input formControlName="xNome" placeholder="Nome do Emitente" />
+        </div>
+      </div>
+    </nz-card>
+
+    <!-- Destinatário -->
+    <nz-card nzTitle="Destinatário" class="section-card" [formGroupName]="'destinatario'">
+      <div nz-row [nzGutter]="16">
+        <div nz-col nzSpan="8">
+          <label>CPF/CNPJ</label>
+          <input nz-input formControlName="cpfCnpj" placeholder="CPF ou CNPJ" />
+        </div>
+        <div nz-col nzSpan="16">
+          <label>Nome</label>
+          <input nz-input formControlName="xNome" placeholder="Nome do Destinatário" />
+        </div>
+      </div>
+    </nz-card>
+
+    <!-- Produtos -->
+    <nz-card nzTitle="Produtos" class="section-card">
+      <div *ngFor="let p of produtos.controls; let i = index" [formGroupName]="i" nz-row [nzGutter]="16" class="produto-row">
+        <div nz-col nzSpan="10">
+          <input nz-input formControlName="nome" placeholder="Produto" />
+        </div>
+        <div nz-col nzSpan="5">
+          <input nz-input type="number" formControlName="quantidade" placeholder="Qtd" />
+        </div>
+        <div nz-col nzSpan="5">
+          <input nz-input type="number" formControlName="valor" placeholder="Valor R$" />
+        </div>
+        <div nz-col nzSpan="4">
+          <button nz-button nzType="default" nzDanger type="button" (click)="removerProduto(i)">Remover</button>
+        </div>
+      </div>
+
+      <button nz-button nzType="dashed" type="button" (click)="adicionarProduto()">+ Adicionar Produto</button>
+    </nz-card>
+
+    <!-- Botão principal -->
+    <div class="actions">
+      <button nz-button nzType="primary" type="button" (click)="emitirNfe()">Emitir NFe</button>
+    </div>
+
+  </form>
+</nz-card>
