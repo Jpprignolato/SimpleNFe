@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { InitialPageComponent } from './initial-page/initial-page.component';
+import { InitialPageComponent } from './pages/initial-page/initial-page.component';
 
 @Component({
   selector: 'app-root',
