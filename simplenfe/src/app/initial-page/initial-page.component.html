@@ -1,0 +1,68 @@
+<nz-layout>
+  <!-- SIDEBAR -->
+  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" nzTheme="dark" class="sider">
+    <div class="logo">
+      <img src="assets/logo-Photoroom.png" alt="Logo" />
+      <span *ngIf="!isCollapsed">SimpleNFe</span>
+    </div>
+
+    <ul nz-menu nzTheme="dark" nzMode="inline">
+      <li nz-submenu nzTitle="Emitir Nota Fiscal" nzIcon="plus">
+        <ul>
+          <li nz-menu-group nzTitle="Opções">
+            <ul>
+              <li nz-menu-item routerLink="/nfe">Preencher NFe</li>
+              <li nz-menu-item routerLink="/consultar-nfe">Consultar NFe</li>
+            </ul>
+          </li>
+          <li nz-menu-group nzTitle="Relatórios">
+            <ul>
+              <li nz-menu-item>Listar todas as NFEs</li>
+              <li nz-menu-item>Relatório em PDF</li>
+              <li nz-menu-item>Relatório em XLS</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+
+      <li nz-submenu nzTitle="Gestão" nzIcon="appstore">
+        <ul>
+          <li nz-menu-item>Gráfico</li>
+          <li nz-menu-item>Receita</li>
+          <li nz-submenu nzTitle="Cadastro de envolvidos">
+            <ul>
+              <li nz-menu-item routerLink="/envolvidos">Envolvidos</li>
+              <li nz-menu-item routerLink="/empresas">Empresas</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+
+      <li nz-submenu nzTitle="Configurações" nzIcon="setting">
+        <ul>
+          <li nz-menu-item routerLink="/usuarios">Usuários</li>
+          <li nz-menu-item routerLink="/certificado">Certificado Digital</li>
+          <li nz-menu-item routerLink="/integracoes">Integrações</li>
+          <li nz-menu-item routerLink="/Configurações">Configurações Gerais</li>
+        </ul>
+      </li>
+    </ul>
+  </nz-sider>
+
+  <!-- MAIN LAYOUT -->
+  <nz-layout>
+    <!-- HEADER -->
+    <nz-header class="header">
+      <i nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" (click)="isCollapsed = !isCollapsed"></i>
+      <span class="header-title">Painel Administrativo</span>
+    </nz-header>
+
+    <!-- CONTEÚDO -->
+    <nz-content class="content">
+      <router-outlet></router-outlet>
+    </nz-content>
+
+    <!-- FOOTER -->
+    <nz-footer class="footer">SimpleNFe ©2025</nz-footer>
+  </nz-layout>
+</nz-layout>
