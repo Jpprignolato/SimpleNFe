@@ -4,7 +4,8 @@ import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@ang
 import { HttpClient } from '@angular/common/http';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { RegisterPageComponent } from '../register-page/register-page.component'; // 👈 importa o form de cadastro
+import { RegisterPageComponent } from '../register-page/register-page.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-page',
@@ -29,7 +30,8 @@ export class LoginPageComponent {
     private fb: NonNullableFormBuilder,
     private http: HttpClient,
     private notification: NzNotificationService,
-    private modal: NzModalService // 👈 injeção do serviço de modal
+    private modal: NzModalService, // 👈 injeção do serviço de modal
+    private router: Router
   ) {}
 
   submitForm(): void {
@@ -44,6 +46,7 @@ export class LoginPageComponent {
           this.notification.success('Login realizado', `Bem-vindo, ${response.name}!`);
           localStorage.setItem('token', response.token);
           localStorage.setItem('username', response.name);
+          this.router.navigate(['/home'], { replaceUrl: true }); // Redireciona para o portal ao fazer login com sucesso, e não deixa o usuário retornar para o login.
         },
         error: (err) => {
           console.error(err);
