@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { SHARED_IMPORTS } from '../../../shared/shared-imports';
 import { NzFormTooltipIcon } from 'ng-zorro-antd/form';
 import { FormGroup, FormControl, NonNullableFormBuilder, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
+import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 
 @Component({
   selector: 'app-register-page',
@@ -25,6 +27,13 @@ export class RegisterPageComponent {
   };
 
   submitForm(): void {
+
+    if (!this.validateForm.value.agree) {
+      this.notification.warning('Aviso!',
+        'Você precisa aceitar os termos para continuar');
+      return;
+    }
+
     if (this.validateForm.valid) {
       console.log('submit', this.validateForm.value);
     } else { 
@@ -55,7 +64,10 @@ export class RegisterPageComponent {
     e.preventDefault();
   }
 
-  constructor(private fb: NonNullableFormBuilder) {
+  constructor(
+    private fb: NonNullableFormBuilder,
+    private notification: NzNotificationService
+  ) {
     this.validateForm = this.fb.group({
       email: ['', [Validators.email, Validators.required]],
       password: ['', [Validators.required]],

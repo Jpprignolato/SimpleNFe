@@ -17,8 +17,10 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzMessageModule } from 'ng-zorro-antd/message';
 
 export const SHARED_IMPORTS = [
+  NzMessageModule,
   CommonModule,
   FormsModule,
   ReactiveFormsModule,
