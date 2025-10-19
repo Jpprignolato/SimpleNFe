@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Component, ViewChild, ViewContainerRef, TemplateRef, AfterViewInit } from '@angular/core';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -12,7 +12,9 @@ import { CommonModule } from '@angular/common';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from "@angular/router";
 
+// Import components Filhos
 
 
 @Component({
@@ -30,11 +32,64 @@ import { FormsModule } from '@angular/forms';
     NzDropDownModule,
     NzSwitchModule,
     NzDividerModule,
-    FormsModule],
+    FormsModule, RouterModule],
   templateUrl: './initial-page.component.html',
   styleUrls: ['./initial-page.component.css'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class InitialPageComponent {
-  isCollapsed = false;
+export class InitialPageComponent implements AfterViewInit {
+    isCollapsed = false;
+
+    // Onde os componentes serão injetados dinamicamente
+    @ViewChild('contentContainer', { read: ViewContainerRef})
+    contentContainer!: ViewContainerRef;
+
+    @ViewChild('welcomeTpl', {read: TemplateRef})
+    welcomeTpl!: TemplateRef<any>
+
+    private currentComponentRef: any = null;
+
+    /**
+   * Método responsável por carregar o componente dinâmico.
+   * Usa import() dinâmico, que carrega o componente sob demanda (lazy).
+   */
+
+    async openComponent(component: string) {
+      this.contentContainer.clear(); // Limpa o conteúdo anterior
+      this.currentComponentRef = null;
+
+      switch (component) {
+        case 'nfe':
+          const { NfeComponent } = await import('../nfe/nfe.component');
+          const compRef = this.contentContainer.createComponent(NfeComponent)
+          this.currentComponentRef = compRef;
+
+          // Injeta a função voltar no component criado dinamicamente
+          compRef.instance.voltar = () => this.voltarInicio();
+          break;
+         
+        default:
+          this.voltarInicio();
+          break;
+      }
+    }
+
+    //Método para voltar ao início
+   voltarInicio() {
+  if (this.currentComponentRef) {
+    try { this.currentComponentRef.destroy(); } catch(e) {}
+    this.currentComponentRef = null;
+  }
+
+  this.contentContainer.clear();
+
+  if (this.welcomeTpl) {
+    this.contentContainer.createEmbeddedView(this.welcomeTpl);
+  }
+}
+
+  // 🔹 Aqui: Angular garante que ViewChild já está inicializado
+  ngAfterViewInit() {
+    this.voltarInicio();
+  }
 }

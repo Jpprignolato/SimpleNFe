@@ -11,7 +11,7 @@
         <ul>
           <li nz-menu-group nzTitle="Opções">
             <ul>
-              <li nz-menu-item routerLink="/nfe">Emitir NFe</li>
+              <li nz-menu-item (click)="openComponent('nfe')">Emitir NFe</li>
               <li nz-menu-item routerLink="/consultar-nfe">Consultar NFe</li>
             </ul>
           </li>
@@ -59,8 +59,17 @@
 
     <!-- CONTEÚDO -->
     <nz-content class="content">
-      <router-outlet></router-outlet>
-    </nz-content>
+  <!-- Container para componentes dinâmicos -->
+  <ng-container #contentContainer></ng-container>
+
+  <!-- Template de boas-vindas -->
+  <ng-template #welcomeTpl>
+    <div style="padding:24px">
+      <h2>Bem-vindo!</h2>
+      <p>Selecione uma opção no menu à esquerda.</p>
+    </div>
+  </ng-template>
+</nz-content>
 
     <!-- FOOTER -->
     <nz-footer class="footer">SimpleNFe ©2025</nz-footer>

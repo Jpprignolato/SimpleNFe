@@ -24,6 +24,9 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
   styleUrls: ['./nfe.component.scss']
 })
 export class NfeComponent {
+  
+  voltar!: () => void;
+
   nfeForm = this.fb.group({
     emitente: this.fb.group({
       cnpj: ['', [Validators.required, Validators.minLength(14)]],

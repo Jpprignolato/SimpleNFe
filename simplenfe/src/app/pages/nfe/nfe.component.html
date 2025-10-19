@@ -1,5 +1,7 @@
 <nz-card nzTitle="Emissão de Nota Fiscal Eletrônica" class="card">
   <form [formGroup]="nfeForm" nz-form nzLayout="vertical">
+    <button nz-button nzType="default" (click)="voltar()">← Voltar</button>
+    <br><br>
 
     <!-- Emitente -->
     <nz-card nzTitle="Emitente" class="section-card" [formGroupName]="'emitente'">
@@ -30,7 +32,7 @@
     </nz-card>
 
     <!-- Produtos -->
-    <nz-card nzTitle="Produtos" class="section-card">
+    <nz-card nzTitle="Produtos" class="section-card" formArrayName="produtos">
       <div *ngFor="let p of produtos.controls; let i = index" [formGroupName]="i" nz-row [nzGutter]="16" class="produto-row">
         <div nz-col nzSpan="10">
           <input nz-input formControlName="nome" placeholder="Produto" />

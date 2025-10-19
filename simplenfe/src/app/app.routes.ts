@@ -3,18 +3,6 @@ import { InitialPageComponent } from './pages/initial-page/initial-page.componen
 
 export const routes: Routes = [
   {
-    path: '',
-    component: InitialPageComponent,
-    children: [
-      {
-        path: '',
-        redirectTo: 'nfe',
-        pathMatch: 'full'
-      },
-      {
-        path: 'nfe',
-        loadComponent: () => import('./pages/nfe/nfe.component').then(m => m.NfeComponent)
-      }
-    ]
+    path: '', component: InitialPageComponent
   }
 ];
