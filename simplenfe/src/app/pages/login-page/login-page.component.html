@@ -25,5 +25,9 @@
       </div>
       <button nz-button class="login-form-button login-form-margin" [nzType]="'primary'">Log in</button>
       Ou
-      <a>Crie sua conta aqui!</a>
+      <div class="extra-links">
+        <a (click)="showRegisterForm()">Crie sua conta aqui!</a>
+      </div>
     </form>
+
+    <ng-template #dynamicContainer></ng-template>
