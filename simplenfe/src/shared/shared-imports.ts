@@ -3,6 +3,7 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, RouterOutlet } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 // NG-Zorro
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -20,6 +21,7 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzMessageModule } from 'ng-zorro-antd/message';
 
 export const SHARED_IMPORTS = [
+  HttpClientModule,
   NzMessageModule,
   CommonModule,
   FormsModule,
