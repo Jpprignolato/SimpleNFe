@@ -35,7 +35,6 @@
               }
             ],
             "styles": [
-              "src/theme.less",
               "src/styles.scss"
             ],
             "scripts": [],
@@ -71,6 +70,9 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "verbose": false
+          },
           "configurations": {
             "production": {
               "buildTarget": "simplenfe:build:production"
@@ -101,6 +103,7 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
               "src/styles.scss"
             ],
             "scripts": []
