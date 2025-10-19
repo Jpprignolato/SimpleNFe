@@ -1,10 +1,10 @@
-import { Component, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { SHARED_IMPORTS } from '../../../shared/shared-imports';
 import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { Router } from '@angular/router';
-import { RegisterPageComponent } from '../register-page/register-page.component';
+import { NzModalService } from 'ng-zorro-antd/modal';
+import { RegisterPageComponent } from '../register-page/register-page.component'; // 👈 importa o form de cadastro
 
 @Component({
   selector: 'app-login-page',
@@ -25,39 +25,28 @@ export class LoginPageComponent {
     remember: [true]
   });
 
-  @ViewChild('dynamicContainer', { read: ViewContainerRef})
-  dynamicContainer!: ViewContainerRef;
-  
   constructor(
     private fb: NonNullableFormBuilder,
     private http: HttpClient,
     private notification: NzNotificationService,
-    private router: Router
+    private modal: NzModalService // 👈 injeção do serviço de modal
   ) {}
 
   submitForm(): void {
     if (this.validateForm.valid) {
       const loginData = {
-        email: this.validateForm.value.userName, // backend espera "email"
+        email: this.validateForm.value.userName,
         password: this.validateForm.value.password
       };
 
       this.http.post('http://localhost:8080/auth/login', loginData).subscribe({
         next: (response: any) => {
-          console.log('Login bem-sucedido', response);
-
-          // ✅ Salva o token JWT no localStorage
+          this.notification.success('Login realizado', `Bem-vindo, ${response.name}!`);
           localStorage.setItem('token', response.token);
           localStorage.setItem('username', response.name);
-
-          // Exibe uma notificação amigável
-          this.notification.success('Login realizado', `Bem-vindo, ${response.name}!`);
-
-          // Redireciona para a home (ou página de emissão de NFe, etc.)
-          this.router.navigate(['/']);
         },
         error: (err) => {
-          console.error('Erro no login', err);
+          console.error(err);
           this.notification.error('Erro de login', 'E-mail ou senha incorretos.');
         }
       });
@@ -71,12 +60,15 @@ export class LoginPageComponent {
     }
   }
 
-  showRegisterForm(): void {
-    // Limpa qualquer componente anterior
-    this.dynamicContainer.clear();
-
-    // Cria o formulário de registro dinamicamente
-    
-    this.dynamicContainer.createComponent(RegisterPageComponent);
+  openRegisterModal(): void {
+    this.modal.create({
+      nzTitle: 'Crie sua conta',
+      nzContent: RegisterPageComponent, // 👈 componente Angular dentro do modal
+      nzCentered: true,
+      nzWidth: 600,
+      nzFooter: null, // remove botões padrão (vamos usar o form interno)
+      nzClosable: true,
+      nzBodyStyle: { padding: '24px 24px 8px 24px' }
+    });
   }
 }
