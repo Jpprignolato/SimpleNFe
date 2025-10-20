@@ -13,6 +13,7 @@ import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from "@angular/router";
+import { Router } from '@angular/router';
 
 // Import components Filhos
 
@@ -39,6 +40,20 @@ import { RouterModule } from "@angular/router";
 })
 export class InitialPageComponent implements AfterViewInit {
     isCollapsed = false;
+    username: string | null = null;
+
+    constructor(private router: Router) {}
+
+  // Abaixo o método de logout
+  ngOnInit(): void {
+    this.username = localStorage.getItem('username');
+  }
+
+  logout(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    this.router.navigate(['/login'], { replaceUrl: true });
+  }
 
     // Onde os componentes serão injetados dinamicamente
     @ViewChild('contentContainer', { read: ViewContainerRef})
@@ -53,7 +68,6 @@ export class InitialPageComponent implements AfterViewInit {
    * Método responsável por carregar o componente dinâmico.
    * Usa import() dinâmico, que carrega o componente sob demanda (lazy).
    */
-
     async openComponent(component: string) {
       this.contentContainer.clear(); // Limpa o conteúdo anterior
       this.currentComponentRef = null;
@@ -92,4 +106,6 @@ export class InitialPageComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.voltarInicio();
   }
+
+   
 }

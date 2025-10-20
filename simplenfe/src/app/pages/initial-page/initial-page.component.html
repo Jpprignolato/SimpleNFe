@@ -1,12 +1,18 @@
 <nz-layout>
   <!-- SIDEBAR -->
-  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="null" nzTheme="dark" class="sider">
+  <nz-sider
+    nzCollapsible
+    [(nzCollapsed)]="isCollapsed"
+    [nzTrigger]="null"
+    nzTheme="dark"
+    class="sider"
+  >
     <div class="logo">
       <img src="assets/logo-Photoroom.png" alt="Logo" />
       <span *ngIf="!isCollapsed">SimpleNFe</span>
     </div>
 
-    <ul nz-menu nzTheme="dark" nzMode="inline">
+    <ul nz-menu nzTheme="dark" nzMode="inline" class="menu-list">
       <li nz-submenu nzTitle="Portal Nota Fiscal" nzIcon="plus">
         <ul>
           <li nz-menu-group nzTitle="Opções">
@@ -43,7 +49,16 @@
           <li nz-menu-item routerLink="/usuarios">Usuários</li>
           <li nz-menu-item routerLink="/certificado">Certificado Digital</li>
           <li nz-menu-item routerLink="/integracoes">Integrações</li>
-          <li nz-menu-item routerLink="/Configurações">Configurações Gerais</li>
+          <li nz-menu-item routerLink="/configuracoes-gerais">
+            Configurações Gerais
+          </li>
+
+          <li nz-menu-divider></li>
+
+          <li nz-menu-item (click)="logout()" class="logout-item">
+            <span nz-icon nzType="logout"></span>
+            Sair
+          </li>
         </ul>
       </li>
     </ul>
@@ -53,23 +68,27 @@
   <nz-layout>
     <!-- HEADER -->
     <nz-header class="header">
-      <i nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" (click)="isCollapsed = !isCollapsed"></i>
-      <span class="header-title">Painel Administrativo</span>
+      <div class="header-left">
+        <i
+          nz-icon
+          [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+          (click)="isCollapsed = !isCollapsed"
+        ></i>
+        <span class="header-title" >Painel Administrativo</span>
+      </div>
     </nz-header>
 
     <!-- CONTEÚDO -->
     <nz-content class="content">
-  <!-- Container para componentes dinâmicos -->
-  <ng-container #contentContainer></ng-container>
+      <ng-container #contentContainer></ng-container>
 
-  <!-- Template de boas-vindas -->
-  <ng-template #welcomeTpl>
-    <div style="padding:24px">
-      <h2>Bem-vindo!</h2>
-      <p>Selecione uma opção no menu à esquerda.</p>
-    </div>
-  </ng-template>
-</nz-content>
+      <ng-template #welcomeTpl>
+        <div class="welcome">
+          <h2>Bem-vindo!</h2>
+          <p>Selecione uma opção no menu à esquerda para começar.</p>
+        </div>
+      </ng-template>
+    </nz-content>
 
     <!-- FOOTER -->
     <nz-footer class="footer">SimpleNFe ©2025</nz-footer>

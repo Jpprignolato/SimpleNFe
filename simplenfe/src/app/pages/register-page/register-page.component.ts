@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NzModalRef } from 'ng-zorro-antd/modal';
 import { SHARED_IMPORTS } from '../../../shared/shared-imports';
 import { NzFormTooltipIcon } from 'ng-zorro-antd/form';
 import {
@@ -20,6 +21,8 @@ import { HttpClient } from '@angular/common/http'; // 👈 Import HTTP
   templateUrl: './register-page.component.html',
   styleUrl: './register-page.component.scss',
 })
+
+
 export class RegisterPageComponent {
   validateForm!: FormGroup<{
     email: FormControl<string>;
@@ -37,8 +40,11 @@ export class RegisterPageComponent {
   constructor(
     private fb: NonNullableFormBuilder,
     private notification: NzNotificationService,
-    private http: HttpClient // 👈 Injetar aqui
-  ) {
+    private http: HttpClient,
+    private modalRef: NzModalRef
+  )
+
+  {
     this.validateForm = this.fb.group({
       email: ['', [Validators.email, Validators.required]],
       password: ['', [Validators.required]],
@@ -48,7 +54,6 @@ export class RegisterPageComponent {
     });
   }
 
-  // 👇 Atualize o método de envio
   submitForm(): void {
     if (!this.validateForm.value.agree) {
       this.notification.warning(
