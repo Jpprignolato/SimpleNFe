@@ -45,9 +45,14 @@ export class InitialPageComponent implements AfterViewInit {
     constructor(private router: Router) {}
 
   // Abaixo o método de logout
-  ngOnInit(): void {
-    this.username = localStorage.getItem('username');
+ ngOnInit(): void {
+  this.username = localStorage.getItem('username');
+  const token = localStorage.getItem('token');
+  if (token) {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    console.log('Usuário logado ID:', payload.sub);
   }
+}
 
   logout(): void {
     localStorage.removeItem('token');

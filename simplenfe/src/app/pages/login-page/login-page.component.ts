@@ -6,6 +6,7 @@ import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { RegisterPageComponent } from '../register-page/register-page.component';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service'; // 👈 novo import
 
 @Component({
   selector: 'app-login-page',
@@ -30,8 +31,9 @@ export class LoginPageComponent {
     private fb: NonNullableFormBuilder,
     private http: HttpClient,
     private notification: NzNotificationService,
-    private modal: NzModalService, // 👈 injeção do serviço de modal
-    private router: Router
+    private modal: NzModalService,
+    private router: Router,
+    private authService: AuthService // 👈 injeção
   ) {}
 
   submitForm(): void {
@@ -44,12 +46,19 @@ export class LoginPageComponent {
       this.http.post('http://localhost:8080/auth/login', loginData).subscribe({
         next: (response: any) => {
           this.notification.success('Login realizado', `Bem-vindo, ${response.name}!`);
-          localStorage.setItem('token', response.token);
+
+          this.authService.setToken(response.token);
           localStorage.setItem('username', response.name);
-          this.router.navigate(['/home'], { replaceUrl: true }); // Redireciona para o portal ao fazer login com sucesso, e não deixa o usuário retornar para o login.
+
+          const userId = this.authService.getUserId();
+
+          if (userId) {
+            this.router.navigate([`/app/${userId}`], { replaceUrl: true });
+          } else {
+            this.notification.warning('Erro', 'Não foi possível identificar o usuário.');
+          }
         },
-        error: (err) => {
-          console.error(err);
+        error: () => {
           this.notification.error('Erro de login', 'E-mail ou senha incorretos.');
         }
       });
@@ -66,10 +75,10 @@ export class LoginPageComponent {
   openRegisterModal(): void {
     this.modal.create({
       nzTitle: 'Crie sua conta',
-      nzContent: RegisterPageComponent, // 👈 componente Angular dentro do modal
+      nzContent: RegisterPageComponent,
       nzCentered: true,
       nzWidth: 600,
-      nzFooter: null, // remove botões padrão (vamos usar o form interno)
+      nzFooter: null,
       nzClosable: true,
       nzBodyStyle: { padding: '24px 24px 8px 24px' }
     });
