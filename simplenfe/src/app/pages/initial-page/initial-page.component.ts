@@ -14,6 +14,7 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from "@angular/router";
 import { Router } from '@angular/router';
+import { StorageService } from '../../services/storage.service';
 
 // Import components Filhos
 
@@ -42,12 +43,12 @@ export class InitialPageComponent implements AfterViewInit {
     isCollapsed = false;
     username: string | null = null;
 
-    constructor(private router: Router) {}
+    constructor(private router: Router, private storage: StorageService) {}
 
   // Abaixo o método de logout
  ngOnInit(): void {
-  this.username = localStorage.getItem('username');
-  const token = localStorage.getItem('token');
+  this.username = this.storage.getItem('username');
+  const token = this.storage.getItem('token');
   if (token) {
     const payload = JSON.parse(atob(token.split('.')[1]));
     console.log('Usuário logado ID:', payload.sub);
